@@ -77,6 +77,7 @@ public class Account implements Serializable {
     }
 
     public void viewAccountDetails() {
+        System.out.println("Account Number: " + this.getAccountNo());
         System.out.println("Balance: " + this.getBalance());
         System.out.println("Account type: " + this.getAccountType());
         System.out.println("Transaction history: " + this.getTransactions());
