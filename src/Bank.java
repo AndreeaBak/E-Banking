@@ -1,3 +1,5 @@
+import exceptions.CustomExceptions;
+
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -21,17 +23,18 @@ public class Bank implements Serializable {
         return this.accounts;
     }
 
-    public Account getAccountByNumber(int accountNo) {
+    public Account getAccountByNumber(int accountNo) throws CustomExceptions.AccountNotFoundException {
        for(Account account: accounts){
            if(account.getAccountNo() == accountNo){
                return account;
            }
        }
-       return null;
+       throw new CustomExceptions.AccountNotFoundException("Account not found.");
     }
 
     public void createAccount(User user, int accountNo, AccountType accountType) {
         Account newAccount = new Account(user, accountNo, accountType);
+
         accounts.add(newAccount);
         saveDataToFile();
     }

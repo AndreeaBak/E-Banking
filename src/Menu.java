@@ -1,3 +1,5 @@
+import exceptions.CustomExceptions;
+
 import java.io.Serializable;
 import java.util.Scanner;
 
@@ -207,27 +209,28 @@ public class Menu implements Serializable{
     public void viewAccountDetails() {
         System.out.print("Enter Account Number: ");
         int accountNo = scanner.nextInt();
-        Account account = bank.getAccountByNumber(accountNo);
-        if (account != null) {
+        try {
+            Account account = bank.getAccountByNumber(accountNo);
             account.viewAccountDetails();
-        } else {
-            System.out.println("Account not found.");
+        } catch (CustomExceptions.AccountNotFoundException e){
+            System.out.println(e.getMessage());
         }
-
         backMenu();
     }
 
     public void deposit() {
         System.out.print("Enter Account Number: ");
         int accountNo = scanner.nextInt();
-        Account account = bank.getAccountByNumber(accountNo);
-        if (account != null) {
+        Account account = null;
+        try {
+            account = bank.getAccountByNumber(accountNo);
             System.out.print("Enter amount to deposit: ");
             double amount = scanner.nextDouble();
             account.deposit(amount);
             System.out.println("Deposit successful.");
-        } else {
-            System.out.println("Account not found.");
+            bank.saveDataToFile();
+        } catch (CustomExceptions.AccountNotFoundException e) {
+            System.out.println(e.getMessage());
         }
 
         backMenu();
@@ -236,8 +239,8 @@ public class Menu implements Serializable{
     public void withdraw() {
         System.out.print("Enter Account Number: ");
         int accountNo = scanner.nextInt();
-        Account account = bank.getAccountByNumber(accountNo);
-        if (account != null) {
+        try {
+            Account account = bank.getAccountByNumber(accountNo);
             System.out.print("Enter amount to withdraw: ");
             double amount = scanner.nextDouble();
             if (account.withdrawal(amount)) {
@@ -245,18 +248,19 @@ public class Menu implements Serializable{
             } else {
                 System.out.println("Withdrawal failed.");
             }
-        } else {
-            System.out.println("Account not found.");
-        }
+            bank.saveDataToFile();
+        } catch (CustomExceptions.AccountNotFoundException | CustomExceptions.InsufficientFundsException e) {
+            System.out.println(e.getMessage());
 
-        backMenu();
+            backMenu();
+        }
     }
 
     public void transfer() {
         System.out.print("Enter Account Number: ");
         int senderAccountNo = scanner.nextInt();
-        Account senderAccount = bank.getAccountByNumber(senderAccountNo);
-        if (senderAccount != null) {
+        try {
+            Account senderAccount = bank.getAccountByNumber(senderAccountNo);
             System.out.print("Enter recipient Account Number: ");
             int recipientAccountNo = scanner.nextInt();
             Account recipientAccount = bank.getAccountByNumber(recipientAccountNo);
@@ -265,11 +269,13 @@ public class Menu implements Serializable{
                 double amount = scanner.nextDouble();
                 senderAccount.transfer(recipientAccount, amount);
                 System.out.println("Transfer successful.");
+                bank.saveDataToFile();
             } else {
                 System.out.println("Recipient account not found.");
             }
-        } else {
-            System.out.println("Sender account not found.");
+
+        } catch (CustomExceptions.AccountNotFoundException e){
+            System.out.println(e.getMessage());
         }
 
         backMenu();
@@ -278,11 +284,12 @@ public class Menu implements Serializable{
     public void deleteAccount() {
         System.out.print("Enter Account Number: ");
         int accountNo = scanner.nextInt();
-        if(bank.getAccountByNumber(accountNo) != null){
+        try {
+            bank.getAccountByNumber(accountNo);
             bank.deleteAccount(accountNo);
             System.out.println("Account deleted.");
-        } else {
-            System.out.println("Account not found.");
+        } catch (CustomExceptions.AccountNotFoundException e){
+            System.out.println(e.getMessage());
         }
 
         backMenu();

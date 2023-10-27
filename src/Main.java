@@ -6,9 +6,9 @@ public class Main {
 
         bank.loadDataFromFile();
 
-        while (true) {
+
             menu.displayMenu();
             bank.saveDataToFile();
-        }
+
     }
 }

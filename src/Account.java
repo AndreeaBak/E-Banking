@@ -1,3 +1,5 @@
+import exceptions.CustomExceptions;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -53,25 +55,25 @@ public class Account implements Serializable {
 
     }
 
-    public boolean withdrawal(double amount) {
+    public boolean withdrawal(double amount) throws CustomExceptions.InsufficientFundsException {
         if (amount > 0.0 && amount <= this.balance && this.accountType == AccountType.SALARY) {
             this.balance -= amount;
             Transaction transaction = new Transaction("Withdrawal", amount);
             this.transactions.add(transaction);
             return true;
         } else {
-            System.out.println("Transaction denied. Check your balance and your account type.");
-            return false;
+            throw new CustomExceptions.InsufficientFundsException("Insufficient funds.");
         }
     }
 
     public void transfer(Account recipient, double amount) {
-        if (this.withdrawal(amount)) {
+        try {
+            this.withdrawal(amount);
             recipient.deposit(amount);
             Transaction transaction = new Transaction("Transfer", amount);
             this.transactions.add(transaction);
-        } else {
-            System.out.println("Insufficient funds.");
+        } catch (CustomExceptions.InsufficientFundsException e){
+            System.out.println(e.getMessage());
         }
 
     }

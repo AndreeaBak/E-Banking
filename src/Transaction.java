@@ -15,6 +15,6 @@ public class Transaction implements Serializable {
     }
 
     public String toString() {
-        return "Transaction{transactionNo=" + this.transactionNo + ", type='" + this.type + "', amount=" + this.amount + ", date=" + this.date + "}";
+        return "Transaction\n {transactionNo=" + this.transactionNo + ", type='" + this.type + "', amount=" + this.amount + ", date=" + this.date + "}\n";
     }
 }
