@@ -1,3 +1,6 @@
+package model;
+
+import enums.AccountType;
 import exceptions.CustomExceptions;
 
 import java.io.Serializable;
@@ -14,12 +17,7 @@ public class Account implements Serializable {
     public Account(User user, int accountNo, AccountType accountType) {
         this.user = user;
         this.accountNo = accountNo;
-        if (user.getAge() < 18) {
-            this.accountType = AccountType.SAVINGS;
-        } else {
-            this.accountType = accountType;
-        }
-
+        this.accountType = AccountType.SAVINGS;
         this.balance = 0.0;
         this.transactions = new ArrayList();
     }
@@ -56,32 +54,33 @@ public class Account implements Serializable {
     }
 
     public boolean withdrawal(double amount) throws CustomExceptions.InsufficientFundsException {
-        if (amount > 0.0 && amount <= this.balance && this.accountType == AccountType.SALARY) {
+        if (amount > 0.0 && amount <= this.balance) {
             this.balance -= amount;
             Transaction transaction = new Transaction("Withdrawal", amount);
             this.transactions.add(transaction);
             return true;
         } else {
-            throw new CustomExceptions.InsufficientFundsException("Insufficient funds.");
+            throw new CustomExceptions.InsufficientFundsException("Insufficient Funds.");
         }
     }
 
-    public void transfer(Account recipient, double amount) {
-        try {
-            this.withdrawal(amount);
+    public void transfer(Account recipient, double amount) throws CustomExceptions.InsufficientFundsException {
+        if (this.withdrawal(amount)) {
             recipient.deposit(amount);
             Transaction transaction = new Transaction("Transfer", amount);
             this.transactions.add(transaction);
-        } catch (CustomExceptions.InsufficientFundsException e){
-            System.out.println(e.getMessage());
         }
-
     }
 
     public void viewAccountDetails() {
         System.out.println("Account Number: " + this.getAccountNo());
         System.out.println("Balance: " + this.getBalance());
+        if(this.getTransactions() != null){
+            System.out.println("Transaction history: " + this.getTransactions());
+        } else {
+            System.out.println("Transaction history: No transaction.");
+        }
+
         System.out.println("Account type: " + this.getAccountType());
-        System.out.println("Transaction history: " + this.getTransactions());
     }
 }

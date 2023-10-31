@@ -1,3 +1,9 @@
+package service;
+
+import enums.AccountType;
+import enums.Occupation;
+import model.Account;
+
 import java.util.ArrayList;
 import java.util.List;
 

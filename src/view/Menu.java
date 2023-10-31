@@ -1,4 +1,12 @@
+package view;
+
+import enums.AccountType;
+import enums.Occupation;
 import exceptions.CustomExceptions;
+import model.Account;
+import model.User;
+import service.Bank;
+import service.Statistics;
 
 import java.io.Serializable;
 import java.util.Scanner;
@@ -13,7 +21,7 @@ public class Menu implements Serializable{
     }
 
     public void displayMenu() {
-        System.out.println("---------E-Banking Menu---------");
+        System.out.println("---------E-Banking view.Menu---------");
         System.out.println("1. Create account");
         System.out.println("2. View account details");
         System.out.println("3. Deposit");
@@ -27,6 +35,9 @@ public class Menu implements Serializable{
         scanner.nextLine();
 
         switch (choice) {
+            case 0:
+                viewAccounts();
+                break;
             case 1:
                 createAccount();
                 break;
@@ -125,6 +136,7 @@ public class Menu implements Serializable{
             displayMenu();
         } else {
             System.out.println("Invalid choice.");
+            backMenu();
         }
     }
 
@@ -191,10 +203,14 @@ public class Menu implements Serializable{
                 return;
         }
 
-        User user = new User(ID, firstName, lastName, occupation, age);
-
-        bank.createAccount(user, accountNo, accountType);
-        System.out.println("Account No. " +accountNo+" created successfully.");
+        User user = null;
+        try {
+            user = new User(ID, firstName, lastName, occupation, age);
+            bank.createAccount(user, accountNo, accountType);
+            System.out.println("Account No. " +accountNo+" created successfully.");
+        } catch (CustomExceptions.InvalidInput e) {
+            System.out.println(e.getMessage());
+        }
 
         backMenu();
     }
@@ -251,9 +267,9 @@ public class Menu implements Serializable{
             bank.saveDataToFile();
         } catch (CustomExceptions.AccountNotFoundException | CustomExceptions.InsufficientFundsException e) {
             System.out.println(e.getMessage());
-
-            backMenu();
         }
+
+        backMenu();
     }
 
     public void transfer() {
@@ -274,7 +290,7 @@ public class Menu implements Serializable{
                 System.out.println("Recipient account not found.");
             }
 
-        } catch (CustomExceptions.AccountNotFoundException e){
+        } catch (CustomExceptions.AccountNotFoundException | CustomExceptions.InsufficientFundsException e){
             System.out.println(e.getMessage());
         }
 
@@ -292,6 +308,14 @@ public class Menu implements Serializable{
             System.out.println(e.getMessage());
         }
 
+        backMenu();
+    }
+
+    public void viewAccounts(){
+        System.out.println("Accounts: ");
+        for(Account account: bank.getAccounts()){
+            System.out.println(account.getAccountNo());
+        }
         backMenu();
     }
 }

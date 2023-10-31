@@ -1,3 +1,5 @@
+package model;
+
 import java.io.Serializable;
 import java.time.LocalDate;
 
@@ -15,6 +17,6 @@ public class Transaction implements Serializable {
     }
 
     public String toString() {
-        return "Transaction\n {transactionNo=" + this.transactionNo + ", type='" + this.type + "', amount=" + this.amount + ", date=" + this.date + "}\n";
+        return "{transaction no=" + this.transactionNo + ", type='" + this.type + "', amount=" + this.amount + ", date=" + this.date + "}\n";
     }
 }

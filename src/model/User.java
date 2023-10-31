@@ -1,3 +1,8 @@
+package model;
+
+import enums.Occupation;
+import exceptions.CustomExceptions;
+
 import java.io.Serializable;
 
 public class User implements Serializable {
@@ -7,13 +12,14 @@ public class User implements Serializable {
     private Occupation occupation;
     private int age;
 
-    public User(String ID, String firstName, String lastName, Occupation occupation, int age) {
-        try {
-            this.ID = ID;
-        } catch (Exception var7) {
-            System.out.println("Invalid ID.");
+    public User(String ID, String firstName, String lastName, Occupation occupation, int age) throws CustomExceptions.InvalidInput {
+        if (ID.length() < 13 || (ID.charAt(0) != '1' && ID.charAt(0) != '2' && ID.charAt(0) != '5' && ID.charAt(0) != '6')) {
+            throw new CustomExceptions.InvalidInput("Invalid ID.");
         }
-
+        if(age < 16){
+            throw new CustomExceptions.InvalidInput("You must be 16 or older to create an account.");
+        }
+        this.ID = ID;
         this.firstName = firstName;
         this.lastName = lastName;
         this.occupation = occupation;

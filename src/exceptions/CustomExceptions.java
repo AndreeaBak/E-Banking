@@ -12,4 +12,10 @@ public class CustomExceptions extends Exception {
             super(message);
         }
     }
+
+    public static class InvalidInput extends Exception {
+        public InvalidInput(String message){
+            super(message);
+        }
+    }
 }

@@ -1,4 +1,10 @@
+package service;
+
+import enums.AccountType;
+import enums.Occupation;
 import exceptions.CustomExceptions;
+import model.Account;
+import model.User;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -7,7 +13,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 public class Bank implements Serializable {
@@ -50,7 +55,13 @@ public class Bank implements Serializable {
         Account account3 = new Account(new User("2970426416322", "Iulia", "Staicu", Occupation.STUDENT, 25), 3, AccountType.FIXED_DEPOSIT);
         Account account4 = new Account(new User("6070629456024", "Maria", "Dobre", Occupation.STUDENT, 16), 4, AccountType.SALARY);
         Account account5 = new Account(new User("1600718417928", "Alexandru", "Badoiu", Occupation.RETIRED, 63), 5, AccountType.FIXED_DEPOSIT);
-        //List<Account> accountList = new ArrayList();
+        //List<model.Account> accountList = new ArrayList();
+        account1.deposit(1000);
+        account2.deposit(1000);
+        account3.deposit(1000);
+        account4.deposit(1000);
+        account5.deposit(1000);
+
         accounts.add(account1);
         accounts.add(account2);
         accounts.add(account3);
@@ -92,7 +103,7 @@ public class Bank implements Serializable {
     }
 
     public String toString() {
-        return "Bank{name='" + this.name + "', accounts=" + this.accounts + "}";
+        return "service.Bank{name='" + this.name + "', accounts=" + this.accounts + "}";
     }
 }
 
