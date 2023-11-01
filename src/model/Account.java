@@ -17,7 +17,7 @@ public class Account implements Serializable {
     public Account(User user, int accountNo, AccountType accountType) {
         this.user = user;
         this.accountNo = accountNo;
-        this.accountType = AccountType.SAVINGS;
+        this.accountType = accountType;
         this.balance = 0.0;
         this.transactions = new ArrayList();
     }

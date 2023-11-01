@@ -13,7 +13,7 @@ public class User implements Serializable {
     private int age;
 
     public User(String ID, String firstName, String lastName, Occupation occupation, int age) throws CustomExceptions.InvalidInput {
-        if (ID.length() < 13 || (ID.charAt(0) != '1' && ID.charAt(0) != '2' && ID.charAt(0) != '5' && ID.charAt(0) != '6')) {
+        if (ID.length() != 13 || (ID.charAt(0) != '1' && ID.charAt(0) != '2' && ID.charAt(0) != '5' && ID.charAt(0) != '6')) {
             throw new CustomExceptions.InvalidInput("Invalid ID.");
         }
         if(age < 16){

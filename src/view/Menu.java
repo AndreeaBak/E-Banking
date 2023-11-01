@@ -21,7 +21,7 @@ public class Menu implements Serializable{
     }
 
     public void displayMenu() {
-        System.out.println("---------E-Banking view.Menu---------");
+        System.out.println("---------E-Banking Menu---------");
         System.out.println("1. Create account");
         System.out.println("2. View account details");
         System.out.println("3. Deposit");
